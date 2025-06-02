@@ -2,7 +2,6 @@ package br.edu.utfpr.trabalhofinal.ui.lancamento.form
 
 import br.edu.utfpr.trabalhofinal.data.Lancamento
 import br.edu.utfpr.trabalhofinal.data.TipoLancamentoEnum
-import java.math.BigDecimal
 import java.time.LocalDate
 
 data class CampoFormulario<T>(

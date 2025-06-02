@@ -22,7 +22,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -247,13 +246,11 @@ private fun BottomBar(
             modifier = Modifier.padding(top = 20.dp),
             titulo = stringResource(R.string.saldo),
             valor = lancamentos.calcularSaldo(),
-            //textColor = MaterialTheme.colorScheme.secondary
         )
         Totalizador(
             modifier = Modifier.padding(bottom = 20.dp),
             titulo = stringResource(R.string.previsao),
             valor = lancamentos.calcularProjecao(),
-            //textColor = MaterialTheme.colorScheme.secondary
         )
     }
 }
@@ -262,10 +259,13 @@ private fun BottomBar(
 fun Totalizador(
     modifier: Modifier = Modifier,
     titulo: String,
-    valor: BigDecimal,
-    textColor: Color = Color.Unspecified
+    valor: BigDecimal
 ) {
-    val cor = if (valor < BigDecimal.ZERO) Color(0xFFCF5355) else Color(0xFF00984E)
+    val cor = when {
+        valor < BigDecimal.ZERO -> Color(0xFFCF5355)
+        valor > BigDecimal.ZERO -> Color(0xFF00984E)
+        else -> Color.Black
+    }
     val valorTexto = if (valor < BigDecimal.ZERO) "-${valor.abs().formatar()}" else valor.formatar()
 
     Row(
@@ -276,15 +276,13 @@ fun Totalizador(
         Text(
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.End,
-            //descobrir
             text = titulo,
-            color = cor
+            color = Color.Black
         )
         Spacer(Modifier.size(10.dp))
         Text(
             modifier = Modifier.width(100.dp),
             textAlign = TextAlign.End,
-            //descobrir
             text = valorTexto,
             color = cor
         )

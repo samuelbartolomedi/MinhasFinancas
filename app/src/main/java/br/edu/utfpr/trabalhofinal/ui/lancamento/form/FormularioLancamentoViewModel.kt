@@ -120,7 +120,7 @@ class FormularioLancamentoViewModel(
                 data = LocalDate.parse(state.data.valor.toString()),
                 valor = try {
                     BigDecimal(state.valor.valor.replace(',', '.'))
-                } catch (e : NumberFormatException) {
+                } catch (_ : NumberFormatException) {
                     BigDecimal.ZERO
                 },
                 paga = state.paga.valor,
@@ -141,14 +141,6 @@ class FormularioLancamentoViewModel(
             )
         )
         return state.formularioValido
-    }
-
-    fun mostrarDialogConfirmacao() {
-        state = state.copy(mostrarDialogConfirmacao = true)
-    }
-
-    fun ocultarDialogConfirmacao() {
-        state = state.copy(mostrarDialogConfirmacao = false)
     }
 
     fun removerLancamento() {

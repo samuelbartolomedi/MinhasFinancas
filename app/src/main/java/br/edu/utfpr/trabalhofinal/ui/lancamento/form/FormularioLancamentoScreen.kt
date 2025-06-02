@@ -232,7 +232,6 @@ private fun FormContent(
             leadingIcon = { Icon(Icons.Filled.AttachMoney, contentDescription = null) },
         )
 
-
         FormDatePicker(
             modifier = formTextFieldModifier,
             label = stringResource(R.string.data),
