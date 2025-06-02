@@ -28,6 +28,7 @@ fun BigDecimal.formatar(): String {
     return formatter.format(this)
 }
 
+
 fun LocalDate.formatar(): String {
     val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     return format(formatter)

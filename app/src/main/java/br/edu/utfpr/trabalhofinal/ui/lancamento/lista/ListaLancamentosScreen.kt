@@ -210,7 +210,7 @@ fun LancamentoItem(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = lancamento.data.toString(), // Ou formate com DateTimeFormatter
+                    text = lancamento.data.formatar(),
                     style = MaterialTheme.typography.bodySmall
                 )
                 Text(
