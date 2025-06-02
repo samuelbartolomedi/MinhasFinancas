@@ -1,5 +1,6 @@
 package br.edu.utfpr.trabalhofinal.ui.lancamento.form
 
+import android.icu.math.BigDecimal
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -47,7 +48,6 @@ import br.edu.utfpr.trabalhofinal.ui.theme.TrabalhoFinalTheme
 import br.edu.utfpr.trabalhofinal.ui.utils.composables.Carregando
 import br.edu.utfpr.trabalhofinal.ui.utils.composables.ErroAoCarregar
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun FormularioLancamentoScreen(
@@ -226,12 +226,25 @@ private fun FormContent(
             label = stringResource(R.string.valor),
             value = valor.valor,
             errorMessageCode = valor.codigoMensagemErro,
-            onValueChanged = onValorAlterado,
+            onValueChanged = { novoValor ->
+                val valorFormatado = novoValor
+                    .replace(".", "")
+                    .replace(",", ".")
+                if (valorFormatado.matches(Regex("^\\d*\\.?\\d*$"))) {
+                    val valorComFormato = try {
+                        BigDecimal(valorFormatado).setScale(2, BigDecimal.ROUND_HALF_EVEN)
+                            .toString()
+                            .replace(".", ",")
+                    } catch (_: NumberFormatException) {
+                        ""
+                    }
+                    onValorAlterado(valorComFormato)
+                }
+            },
             keyboardType = KeyboardType.Number,
             enabled = !processando,
             leadingIcon = { Icon(Icons.Filled.AttachMoney, contentDescription = null) },
         )
-
         FormDatePicker(
             modifier = formTextFieldModifier,
             label = stringResource(R.string.data),

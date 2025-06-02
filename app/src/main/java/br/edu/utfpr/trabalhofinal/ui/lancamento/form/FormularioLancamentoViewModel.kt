@@ -44,7 +44,10 @@ class FormularioLancamentoViewModel(
                 lancamento = lancamento,
                 descricao = state.descricao.copy(valor = lancamento.descricao),
                 data = state.data.copy(valor = lancamento.data),
-                valor = state.valor.copy(valor = lancamento.valor.toString()),
+                valor = state.valor.copy(valor = lancamento.valor
+                    .setScale(2, BigDecimal.ROUND_HALF_EVEN)
+                    .toString()
+                    .replace(".", ",")),
                 paga = state.paga.copy(valor = lancamento.paga),
                 tipo = state.tipo.copy(valor = lancamento.tipo.name)
             )

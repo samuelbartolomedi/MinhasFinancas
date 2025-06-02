@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -267,21 +268,20 @@ fun Totalizador(
         else -> Color.Black
     }
     val valorTexto = if (valor < BigDecimal.ZERO) "-${valor.abs().formatar()}" else valor.formatar()
-
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End,
     ) {
         Text(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).widthIn(min = 120.dp),
             textAlign = TextAlign.End,
             text = titulo,
             color = Color.Black
         )
         Spacer(Modifier.size(10.dp))
         Text(
-            modifier = Modifier.width(100.dp),
+            modifier = Modifier.widthIn(min = 120.dp),
             textAlign = TextAlign.End,
             text = valorTexto,
             color = cor

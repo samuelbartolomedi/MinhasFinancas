@@ -24,7 +24,7 @@ fun List<Lancamento>.calcularProjecao(): BigDecimal = map {
 }.sumOf { it }
 
 fun BigDecimal.formatar(): String {
-    val formatter = DecimalFormat("R$#,##0.00")
+    val formatter = DecimalFormat("R$ #,##0.00")
     return formatter.format(this)
 }
 
