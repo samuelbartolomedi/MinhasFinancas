@@ -16,6 +16,7 @@ import androidx.compose.material.icons.automirrored.filled.Notes
 import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -25,6 +26,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -89,7 +91,8 @@ fun FormularioLancamentoScreen(
                     processando = viewModel.state.salvando || viewModel.state.excluindo,
                     onVoltarPressed = onVoltarPressed,
                     onSalvarPressed = viewModel::salvarLancamento,
-                    onExcluirPressed = viewModel::removerLancamento
+                    onExcluirPressed = viewModel::removerLancamento,
+                    viewModel = viewModel
                 )
             }
         ) { paddingValues ->
@@ -119,7 +122,8 @@ private fun AppBar(
     processando: Boolean,
     onVoltarPressed: () -> Unit,
     onSalvarPressed: () -> Unit,
-    onExcluirPressed: () -> Unit
+    onExcluirPressed: () -> Unit,
+    viewModel: FormularioLancamentoViewModel
 ) {
     TopAppBar(
         modifier = modifier.fillMaxWidth(),
@@ -148,7 +152,7 @@ private fun AppBar(
                 )
             } else {
                 if (!lancamentoNovo) {
-                    IconButton(onClick = onExcluirPressed) {
+                    IconButton(onClick = { viewModel.mostrarDialogConfirmacao() }) {
                         Icon(
                             imageVector = Icons.Filled.Delete,
                             contentDescription = stringResource(R.string.excluir)
@@ -161,6 +165,27 @@ private fun AppBar(
                         contentDescription = stringResource(R.string.salvar)
                     )
                 }
+            }
+
+            if (viewModel.state.mostrarDialogConfirmacao) {
+                AlertDialog(
+                    onDismissRequest = { viewModel.ocultarDialogConfirmacao() },
+                    title = { Text(stringResource(R.string.confirmacao)) },
+                    text = { Text(stringResource(R.string.confirmar_exclusao)) },
+                    confirmButton = {
+                        TextButton(onClick = {
+                            viewModel.ocultarDialogConfirmacao()
+                            onExcluirPressed()
+                        }) {
+                            Text(stringResource(R.string.sim))
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { viewModel.ocultarDialogConfirmacao() }) {
+                            Text(stringResource(R.string.nao))
+                        }
+                    }
+                )
             }
         },
         colors = TopAppBarDefaults.topAppBarColors().copy(
@@ -176,12 +201,14 @@ private fun AppBar(
 @Composable
 private fun AppBarPreview() {
     TrabalhoFinalTheme {
+        val viewModel: FormularioLancamentoViewModel = viewModel()
         AppBar(
             lancamentoNovo = true,
             processando = false,
             onVoltarPressed = {},
             onSalvarPressed = {},
-            onExcluirPressed = {}
+            onExcluirPressed = {},
+            viewModel = viewModel
         )
     }
 }

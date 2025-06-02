@@ -146,6 +146,14 @@ class FormularioLancamentoViewModel(
         return state.formularioValido
     }
 
+    fun mostrarDialogConfirmacao() {
+        state = state.copy(mostrarDialogConfirmacao = true)
+    }
+
+    fun ocultarDialogConfirmacao() {
+        state = state.copy(mostrarDialogConfirmacao = false)
+    }
+
     fun removerLancamento() {
         state = state.copy(
             excluindo = true,
